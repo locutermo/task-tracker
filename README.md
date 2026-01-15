@@ -13,14 +13,23 @@
 Este proyecto usa **GitHub Actions**. Al subir cambios al repositorio, se generan automáticamente los ejecutables.
 1.  Ve a la pestaña "Actions" en tu repositorio de GitHub.
 2.  Entra a la última ejecución ("Build Standalone Executables").
-3.  Abajo en "Artifacts", descarga `tracker-windows` o `tracker-macos`.
-4.  Coloca el archivo descargado en la carpeta `dist/` del proyecto antes de enviarlo.
+3.  Abajo en "Artifacts", descarga de la sección de instaladores.
+4.  Para Windows busca `Instalador-Windows` y para Mac `Instalador-Mac-PKG`.
 
-**Opción B: Compilar Manualmente**
+**Opción B: Compilar Manualmente (Local)**
 Si prefieres hacerlo en tu máquina:
-1.  **Construir**: Ejecutar `./scripts/build/build_macos.sh` (Mac) o `scripts\build\build_windows.bat` (Windows).
-2.  **Entregar**: Copiar la carpeta del proyecto con la carpeta `dist/` generada.
-3.  **Instalar**: El usuario ejecuta `scripts/macos/manage_tracker.sh install` o `manage_tracker.bat install`. **No requiere instalar Python.**
+
+**Mac:**
+```bash
+./scripts/build/build_installer_macos.sh
+```
+Genera: `tracker_installer.pkg`
+
+**Windows (Requiere [Inno Setup](https://jrsoftware.org/isdl.php)):**
+```cmd
+scripts\build\build_installer_windows.bat
+```
+Genera: `Output\InstaladorTracker.exe`
 
 ## Instalación (Desarrollo)
 
@@ -67,7 +76,6 @@ El proyecto incluye `manage_tracker.bat` para facilitar la instalación y auto-i
     ```cmd
     scripts\windows\manage_tracker.bat install
     ```
-    *(Esto instala dependencias y crea un acceso directo en `Inicio` para que arranque al prender la PC)*.
 3.  **Ver Estado**:
     ```cmd
     scripts\windows\manage_tracker.bat status
@@ -93,6 +101,21 @@ tracker/
 ├── Generar Reporte.command       # [PARA ABOGADOS MAC] Doble click para ver reporte
 └── README.md
 ```
-en la máquina del abogado.
 
-El usuario tiene la potestad de revisar y filtrar qué información se enviará finalmente a los sistemas corporativos (Jira).
+## 👩‍⚖️ Instrucciones para el usuario final (Abogados)
+
+El abogado podrá descargar directamente los instaladores desde la pestaña **Actions** de GitHub (archivos `.exe` y `.pkg`).
+
+### En Windows 🪟
+1.  Descarga y ejecuta `InstaladorTracker.exe`.
+2.  Sigue los pasos y el tracker se configurará para iniciar automáticamente.
+
+### En Mac 🍎
+1.  Descarga y ejecuta `tracker_installer.pkg`.
+2.  ⚠️ **Aviso de Seguridad**: Al ser software privado, Mac mostrará un aviso de "Software malicioso". Para instalarlo:
+    *   **Click derecho** (o Control + Click) sobre el instalador y selecciona **Abrir**.
+    *   O ve a **Ajustes del Sistema > Privacidad y Seguridad** y haz clic en **"Abrir de todos modos"**.
+3.  Una vez instalado, el servicio correrá en segundo plano automáticamente.
+
+**Para ver el reporte diario:**
+Doble click en el archivo `Generar Reporte.command` (Mac) o `Generar Reporte.bat` (Windows) incluido en la carpeta raíz.

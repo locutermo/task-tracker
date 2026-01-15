@@ -27,9 +27,9 @@ jobs:
         python -m PyInstaller --noconsole --onefile --name tracker launcher.py
         
     - name: Compile Windows Installer (Inno Setup)
-      uses: Minionguy/inno-setup-action@v1.2.2
+      uses: IsSven/InnoSetup-Action@v1.9.0
       with:
-        path: setup.iss
+        setup-file: setup.iss
         
     - name: Upload Installer
       uses: actions/upload-artifact@v4
