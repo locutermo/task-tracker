@@ -2,7 +2,7 @@ name: Build Standalone Executables
 
 on:
   push:
-    branches: [ "main", "master","portable" ]
+    branches: [ "main", "master", "portable", "installer" ]
   workflow_dispatch:
 
 jobs:
