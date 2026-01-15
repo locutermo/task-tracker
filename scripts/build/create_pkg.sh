@@ -1,6 +1,5 @@
 #!/bin/bash
-# Script para preparar la estructura del instalador .pkg de Mac
-# Este script será ejecutado por GitHub Actions
+# Script para crear el instalador .pkg en Mac (Usado por GitHub Actions)
 
 # Crear estructura de carpetas simulando el sistema de archivos
 mkdir -p build_pkg/usr/local/bin
@@ -46,10 +45,6 @@ EOF
 chmod +x build_pkg/Applications/Tracker/"Generar Reporte.command"
 
 # Crear el paquete
-# --root: La carpeta con la estructura de archivos
-# --identifier: ID único del paquete
-# --version: Versión
-# --install-location: Dónde se instalará (/)
 pkgbuild --root build_pkg \
          --identifier com.integratel.tracker \
          --version 1.0 \
