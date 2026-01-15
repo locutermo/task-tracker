@@ -2,6 +2,8 @@
 # Script de Gestión para el Tracker (macOS)
 # Este script te permite controlar la versión instalada o correr el código localmente.
 
+cd "$(dirname "$0")"
+
 echo "=========================================="
 echo "   CONTROL DE SERVICIO TRACKER - MAC      "
 echo "=========================================="
@@ -57,6 +59,13 @@ menu() {
             tail -f /tmp/integratel_tracker.out
             ;;
         5)
+            echo "Verificando dependencias necesarias..."
+            python3 -c "import pywinctl, pynput, matplotlib" 2>/dev/null
+            if [ $? -ne 0 ]; then
+                echo "Instalando dependencias faltantes (pywinctl, pynput, matplotlib)..."
+                python3 -m pip install pywinctl pynput matplotlib
+            fi
+            
             echo "Ejecutando código local (Python)..."
             export PYTHONPATH=$PYTHONPATH:.
             python3 launcher.py
