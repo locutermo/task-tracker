@@ -1,3 +1,4 @@
+import os
 import sqlite3
 from datetime import datetime
 from src.config import Config
@@ -6,11 +7,18 @@ from src.config import Config
 class DatabaseHandler:
     def __init__(self, db_name=Config.DB_NAME):
         self.db_name = db_name
+        self.ensure_db_dir()
         self.init_db()
+
+    def ensure_db_dir(self):
+        db_dir = os.path.dirname(self.db_name)
+        if not os.path.exists(db_dir):
+            os.makedirs(db_dir)
 
     def init_db(self):
         with sqlite3.connect(self.db_name) as conn:
             cursor = conn.cursor()
+            cursor.execute("PRAGMA journal_mode=WAL")
             cursor.execute("""
                 CREATE TABLE IF NOT EXISTS activity_log (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -106,8 +114,11 @@ class DatabaseHandler:
                     f.write("-" * 100 + "\n")
 
                     for (app, title), seconds in sorted_activities:
-                        minutes = int(seconds // 60)
-                        duration_str = f"{minutes}m"
+                        if seconds < 60:
+                            duration_str = f"{int(seconds)}s"
+                        else:
+                            minutes = int(seconds // 60)
+                            duration_str = f"{minutes}m"
 
                         app_label = (app[:22] + "..") if len(app) > 22 else app
                         title_label = (title[:57] + "..") if len(title) > 57 else title
