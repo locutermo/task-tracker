@@ -8,17 +8,27 @@ set "SHORTCUT=%STARTUP_FOLDER%\IntegratelTracker.lnk"
 IF "%1"=="" GOTO :USAGE
 
 :INSTALL
+:INSTALL
 IF "%1"=="install" (
-    echo Installing dependencies...
-    %PYTHON_CMD% -m pip install -r requirements.txt
+    echo Installing service...
     
-    echo Creating headless launcher script...
+    REM Check if we are in dist/ folder deployment or source
+    REM Assuming we deploy the whole folder structure or just the bin?
+    REM Let's assume the user unzips the build folder which has scripts/ and dist/
+    
+    IF NOT EXIST "%SCRIPT_DIR%..\..\dist\tracker.exe" (
+        echo Error: tracker.exe not found in dist folder.
+        echo Please ensure you have built the project or downloaded the full release.
+        GOTO :EOF
+    )
+
+    echo Creating headed launcher script...
     echo Set WshShell = CreateObject("WScript.Shell") > "%VBS_SCRIPT%"
-    echo WshShell.Run "cmd /c cd /d ""%SCRIPT_DIR%"" && %PYTHON_CMD% -m src.main", 0 >> "%VBS_SCRIPT%"
+    echo WshShell.Run chr(34) ^& "%SCRIPT_DIR%..\..\dist\tracker.exe" ^& chr(34), 0 >> "%VBS_SCRIPT%"
     echo Set WshShell = Nothing >> "%VBS_SCRIPT%"
     
     echo Creating Startup shortcut...
-    powershell "$s=(New-Object -COM WScript.Shell).CreateShortcut('%SHORTCUT%');$s.TargetPath='%VBS_SCRIPT%';$s.WorkingDirectory='%SCRIPT_DIR%';$s.Save()"
+    powershell "$s=(New-Object -COM WScript.Shell).CreateShortcut('%SHORTCUT%');$s.TargetPath='%VBS_SCRIPT%';$s.WorkingDirectory='%SCRIPT_DIR%..\..\dist';$s.Save()"
     
     echo Starting service...
     start /b wscript "%VBS_SCRIPT%"

@@ -7,7 +7,22 @@
 *   **Historial Exportable**: Genera archivos `.log` detallados con formato de tabla.
 *   **Servicio Automático**: Se inicia automáticamente al encender la Mac.
 
-## Instalación
+## 📦 Distribución Standalone (Sin Python)
+
+**Opción A: Descargar desde GitHub (Recomendado)**
+Este proyecto usa **GitHub Actions**. Al subir cambios al repositorio, se generan automáticamente los ejecutables.
+1.  Ve a la pestaña "Actions" en tu repositorio de GitHub.
+2.  Entra a la última ejecución ("Build Standalone Executables").
+3.  Abajo en "Artifacts", descarga `tracker-windows` o `tracker-macos`.
+4.  Coloca el archivo descargado en la carpeta `dist/` del proyecto antes de enviarlo.
+
+**Opción B: Compilar Manualmente**
+Si prefieres hacerlo en tu máquina:
+1.  **Construir**: Ejecutar `./scripts/build/build_macos.sh` (Mac) o `scripts\build\build_windows.bat` (Windows).
+2.  **Entregar**: Copiar la carpeta del proyecto con la carpeta `dist/` generada.
+3.  **Instalar**: El usuario ejecuta `scripts/macos/manage_tracker.sh install` o `manage_tracker.bat install`. **No requiere instalar Python.**
+
+## Instalación (Desarrollo)
 
 1.  Asegúrate de tener Python 3.11 instalado.
 2.  Instala las dependencias:
@@ -66,23 +81,17 @@ El proyecto incluye `manage_tracker.bat` para facilitar la instalación y auto-i
 
 ```
 tracker/
-├── src/                          # Código fuente modular
-│   ├── __init__.py
-│   ├── config.py                 # Configuración
-│   ├── database.py               # Manejador de base de datos
-│   ├── idle_detector.py          # Detección de inactividad
-│   ├── tracker.py                # Lógica principal de rastreo
-│   ├── visualizer.py             # Reportes y gráficos
-│   └── main.py                   # Punto de entrada
-├── scripts/                      # Scripts de gestión por plataforma
-│   ├── macos/
-│   │   ├── manage_tracker.sh
-│   │   └── com.integratel.tracker.plist
-│   └── windows/
-│       └── manage_tracker.bat
-├── requirements.txt
-├── README.md
-└── timeline_abogados.db          # Base de datos (se genera automáticamente)
+├── dist/                         # Carpeta CRÍTICA: Contiene el ejecutable del programa
+├── src/                          # Código fuente (Solo para desarrolladores)
+├── scripts/                      # Scripts técnicos (Solo para desarrolladores)
+│   ├── build/                    # Scripts para construir el ejecutable
+│   ├── macos/                    # Scripts internos de Mac
+│   └── windows/                  # Scripts internos de Windows
+├── Instalar.bat                  # [PARA ABOGADOS WINDOWS] Doble click para instalar
+├── Instalar.command              # [PARA ABOGADOS MAC] Doble click para instalar
+├── Generar Reporte.bat           # [PARA ABOGADOS WINDOWS] Doble click para ver reporte
+├── Generar Reporte.command       # [PARA ABOGADOS MAC] Doble click para ver reporte
+└── README.md
 ```
 en la máquina del abogado.
 
