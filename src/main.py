@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 import argparse
-from .database import DatabaseHandler
-from .tracker import ActivityTracker
-from .visualizer import plot_daily_summary
+from src.database import DatabaseHandler
+from src.tracker import ActivityTracker
+from src.visualizer import plot_daily_summary
 
 
 def main():

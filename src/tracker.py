@@ -2,9 +2,9 @@ import re
 import time
 import pywinctl as pwc
 from datetime import datetime
-from .config import Config
-from .database import DatabaseHandler
-from .idle_detector import IdleDetector
+from src.config import Config
+from src.database import DatabaseHandler
+from src.idle_detector import IdleDetector
 
 
 class ActivityTracker:

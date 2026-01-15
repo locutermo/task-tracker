@@ -1,6 +1,6 @@
 import sqlite3
 from datetime import datetime
-from .config import Config
+from src.config import Config
 
 
 class DatabaseHandler:

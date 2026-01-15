@@ -1,6 +1,6 @@
 import time
 from pynput import mouse, keyboard
-from .config import Config
+from src.config import Config
 
 
 class IdleDetector:
