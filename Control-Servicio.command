@@ -32,15 +32,24 @@ menu() {
             ;;
         2)
             echo "Deteniendo servicio..."
-            sudo launchctl unload $PLIST_PATH
-            echo "Servicio detenido."
+            # Intentar el comando moderno primero
+            launchctl bootout gui/$(id -u) "$PLIST_PATH" 2>/dev/null
+            # Fallback al comando antiguo si el anterior falla
+            launchctl unload "$PLIST_PATH" 2>/dev/null
+            
+            # Verificar si sigue vivo y forzar salida si es necesario
+            PID=$(launchctl list | grep "$SERVICE_LABEL" | awk '{print $1}')
+            if [ "$PID" != "-" ] && [ ! -z "$PID" ]; then
+                echo "El servicio no respondió, forzando cierre (PID: $PID)..."
+                kill -9 $PID 2>/dev/null
+            fi
+            echo "Servicio detenido correctamente."
             menu
             ;;
         3)
             echo "Iniciando servicio..."
-            sudo launchctl unload $PLIST_PATH 2>/dev/null
-            sudo launchctl load $PLIST_PATH
-            echo "Servicio reiniciado."
+            launchctl bootstrap gui/$(id -u) "$PLIST_PATH" 2>/dev/null || launchctl load "$PLIST_PATH"
+            echo "Servicio iniciado."
             menu
             ;;
         4)
