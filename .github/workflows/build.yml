@@ -27,9 +27,9 @@ jobs:
         python -m PyInstaller --noconsole --onefile --name tracker launcher.py
         
     - name: Compile Windows Installer (Inno Setup)
-      uses: AmadeuszSzymko/Inno-Setup-Action@v1.2.2
-      with:
-        setup-file: setup.iss
+      run: |
+        & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" setup.iss
+      shell: powershell
         
     - name: Upload Installer
       uses: actions/upload-artifact@v4
