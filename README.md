@@ -108,14 +108,12 @@ El abogado podrá descargar directamente los instaladores desde la pestaña **Ac
 
 ### En Windows 🪟
 1.  Descarga y ejecuta `InstaladorTracker.exe`.
-2.  Sigue los pasos y el tracker se configurará para iniciar automáticamente.
+2.  Sigue los pasos. El tracker se configurará para iniciar automáticamente.
+3.  **Para ver el reporte**: Busca el icono **"Generar Reporte Tracker"** en tu **Escritorio** o Menú Inicio. Al abrirlo, se generará el log y se abrirá automáticamente.
 
 ### En Mac 🍎
 1.  Descarga y ejecuta `tracker_installer.pkg`.
-2.  ⚠️ **Aviso de Seguridad**: Al ser software privado, Mac mostrará un aviso de "Software malicioso". Para instalarlo:
+2.  ⚠️ **Aviso de Seguridad**: Al ser software privado, Mac mostrará un aviso. Para instalarlo:
     *   **Click derecho** (o Control + Click) sobre el instalador y selecciona **Abrir**.
-    *   O ve a **Ajustes del Sistema > Privacidad y Seguridad** y haz clic en **"Abrir de todos modos"**.
 3.  Una vez instalado, el servicio correrá en segundo plano automáticamente.
-
-**Para ver el reporte diario:**
-Doble click en el archivo `Generar Reporte.command` (Mac) o `Generar Reporte.bat` (Windows) incluido en la carpeta raíz.
+4.  **Para ver el reporte**: Ve a tu carpeta de **Aplicaciones**, busca la carpeta **Tracker** y abre el archivo **"Generar Reporte"**.

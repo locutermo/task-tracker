@@ -33,6 +33,18 @@ cat > build_pkg/Library/LaunchAgents/com.integratel.tracker.plist <<EOF
 </plist>
 EOF
 
+# Crear la carpeta de aplicaciones para el reporte
+mkdir -p build_pkg/Applications/Tracker
+cat > build_pkg/Applications/Tracker/"Generar Reporte.command" <<EOF
+#!/bin/bash
+cd "\$(dirname "\$0")"
+echo "Generando reporte de actividad..."
+/usr/local/bin/tracker --export "Reporte_Abogados.log"
+echo "✅ Reporte generado: Reporte_Abogados.log"
+open "Reporte_Abogados.log"
+EOF
+chmod +x build_pkg/Applications/Tracker/"Generar Reporte.command"
+
 # Crear el paquete
 # --root: La carpeta con la estructura de archivos
 # --identifier: ID único del paquete
