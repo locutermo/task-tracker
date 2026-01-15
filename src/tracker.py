@@ -11,6 +11,7 @@ class ActivityTracker:
     def __init__(self):
         self.db = DatabaseHandler()
         self.idle_detector = IdleDetector()
+        self.last_poll_time = time.time()
         self.running = False
 
     def _clean_window_data(self, app_name, raw_title):
@@ -54,7 +55,7 @@ class ActivityTracker:
             self.idle_detector.start()
 
             print(
-                f"Iniciando Tracker... (Intervalo: {Config.POLL_INTERVAL}s, Idle: {Config.IDLE_TIMEOUT}s)"
+                f"Iniciando Tracker... (Intervalo: {Config.POLL_INTERVAL}s, Idle: {300}s)"
             )
             print("Presiona Ctrl+C para detener.")
 
@@ -72,6 +73,11 @@ class ActivityTracker:
                         "Reunión",
                         "Llamada",
                         "Meeting",
+                        "Netflix",
+                        "YouTube",
+                        "Disney+",
+                        "HBO",
+                        "Prime Video",
                     ]
                     is_meeting = any(
                         kw.lower() in title.lower() for kw in meeting_keywords
@@ -83,11 +89,15 @@ class ActivityTracker:
                         is_idle = self.idle_detector.is_idle()
 
                     status = "Inactivo (Idle)" if is_idle else "Activo"
+                    now_time = time.time()
+                    elapsed = int(now_time - self.last_poll_time)
+                    self.last_poll_time = now_time
+
                     print(
-                        f"[{datetime.now().strftime('%H:%M:%S')}] {app_name} - {title[:30]}... ({status})"
+                        f"[{datetime.now().strftime('%H:%M:%S')}] {app_name} - {title[:30]}... ({status}) [{elapsed}s]"
                     )
 
-                    self.db.log_activity(app_name, title, Config.POLL_INTERVAL, is_idle)
+                    self.db.log_activity(app_name, title, elapsed, is_idle)
                 else:
                     print("No se pudo detectar ventana activa.")
 
