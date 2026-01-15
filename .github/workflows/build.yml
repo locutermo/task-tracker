@@ -23,15 +23,19 @@ jobs:
         pip install pyinstaller
         
     - name: Build with PyInstaller
-      # Use the same command logic as our build_windows.bat
       run: |
         python -m PyInstaller --noconsole --onefile --name tracker launcher.py
         
-    - name: Upload Windows Artifact
+    - name: Compile Windows Installer (Inno Setup)
+      uses: Minionguy/inno-setup-action@v1.2.2
+      with:
+        path: setup.iss
+        
+    - name: Upload Installer
       uses: actions/upload-artifact@v4
       with:
-        name: tracker-windows
-        path: dist/tracker.exe
+        name: Instalador-Windows
+        path: Output/InstaladorTracker.exe
 
   build-macos:
     runs-on: macos-latest
@@ -50,12 +54,17 @@ jobs:
         pip install pyinstaller
         
     - name: Build with PyInstaller
-      # Use the same command logic as our build_macos.sh
       run: |
+        # Adjust path since launcher is in root
         python -m PyInstaller --noconsole --onefile --name tracker launcher.py
         
-    - name: Upload macOS Artifact
+    - name: Create macOS Installer (.pkg)
+      run: |
+        chmod +x scripts/build/create_pkg.sh
+        ./scripts/build/create_pkg.sh
+        
+    - name: Upload macOS Installer
       uses: actions/upload-artifact@v4
       with:
-        name: tracker-macos
-        path: dist/tracker
+        name: Instalador-Mac-PKG
+        path: tracker_installer.pkg
