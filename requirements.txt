@@ -1,0 +1,4 @@
+pywinctl
+psutil
+matplotlib
+pynput
