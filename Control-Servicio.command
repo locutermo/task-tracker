@@ -49,7 +49,8 @@ menu() {
             ;;
         5)
             echo "Ejecutando código local (Python)..."
-            python3 -m src.main
+            export PYTHONPATH=$PYTHONPATH:.
+            python3 launcher.py
             ;;
         6)
             exit 0
