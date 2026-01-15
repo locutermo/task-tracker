@@ -9,11 +9,42 @@ class DatabaseHandler:
         self.db_name = db_name
         self.ensure_db_dir()
         self.init_db()
+        self.migrate_old_data()
 
     def ensure_db_dir(self):
         db_dir = os.path.dirname(self.db_name)
         if not os.path.exists(db_dir):
             os.makedirs(db_dir)
+
+    def migrate_old_data(self):
+        # Si existe una DB en la carpeta actual, migrar los datos a la nueva ubicación global
+        old_db = "timeline_abogados.db"
+        if os.path.exists(old_db) and os.path.abspath(old_db) != os.path.abspath(
+            self.db_name
+        ):
+            print(f"Migrando datos desde {old_db} a la ubicación unificada...")
+            try:
+                with sqlite3.connect(old_db) as conn_old:
+                    cursor_old = conn_old.cursor()
+                    cursor_old.execute(
+                        "SELECT timestamp, app_name, window_title, duration, is_idle FROM activity_log"
+                    )
+                    rows = cursor_old.fetchall()
+
+                    if rows:
+                        with sqlite3.connect(self.db_name) as conn_new:
+                            cursor_new = conn_new.cursor()
+                            cursor_new.executemany(
+                                "INSERT INTO activity_log (timestamp, app_name, window_title, duration, is_idle) VALUES (?, ?, ?, ?, ?)",
+                                rows,
+                            )
+                            conn_new.commit()
+                        print(f"✅ {len(rows)} registros migrados con éxito.")
+
+                # Renombrar la vieja para que no se use más
+                os.rename(old_db, old_db + ".backup")
+            except Exception as e:
+                print(f"Error durante la migración: {e}")
 
     def init_db(self):
         with sqlite3.connect(self.db_name) as conn:
